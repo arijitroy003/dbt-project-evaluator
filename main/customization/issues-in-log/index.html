@@ -12,25 +12,30 @@
         <link rel="prev" href="../excluding-packages-and-paths/">
       
       
-        <link rel="next" href="../querying-columns-names-and-descriptions/">
+        <link rel="next" href="../../ci-check/">
       
       
         
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="zensical-0.0.67">
     
     
       
-        <title>Display issues in the logs - dbt_project_evaluator</title>
+        <title>Reading the violations in the logs - dbt_project_evaluator</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.4ae390e2.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.96d1a7e4.min.css">
       
       
 
@@ -44,14 +49,14 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
     
       <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -72,16 +77,28 @@
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
     <div data-md-component="skip">
       
         
-        <a href="#displaying-violations-in-the-logs" class="md-skip">
+        <a href="#reading-the-violations-in-the-logs" class="md-skip">
           Skip to content
         </a>
       
     </div>
     <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+  Using dbt v1? This documentation is for version 2, which requires dbt 2.0 or later.
+  Pick version 1.x in the version selector, or see the
+  <a href="https://github.com/dbt-labs/dbt-project-evaluator/tree/1.x">1.x branch</a>.
+
+          </div>
+          
+        </aside>
       
     </div>
     
@@ -98,12 +115,12 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="dbt_project_evaluator" class="md-header__button md-logo" aria-label="dbt_project_evaluator" data-md-component="logo">
       
-  <img src="../../assets/dbt-logo.svg" alt="logo">
+  <img src="../../assets/dbt-logo.svg" alt="dbt_project_evaluator">
 
     </a>
-    <label class="md-header__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -115,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Display issues in the logs
+              Reading the violations in the logs
             
           </span>
         </div>
@@ -155,57 +172,30 @@
     
       
       
-        <label class="md-header__button md-icon" for="__search">
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
           
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         </label>
-        <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
 </div>
       
     
-    
-      <div class="md-header__source">
+    <div class="md-header__source">
+      
         <a href="https://github.com/dbt-labs/dbt-project-evaluator" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     dbt-labs/dbt-project-evaluator
   </div>
 </a>
-      </div>
-    
+      
+    </div>
   </nav>
   
 </header>
@@ -235,7 +225,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="dbt_project_evaluator" class="md-nav__button md-logo" aria-label="dbt_project_evaluator" data-md-component="logo">
       
-  <img src="../../assets/dbt-logo.svg" alt="logo">
+  <img src="../../assets/dbt-logo.svg" alt="dbt_project_evaluator">
 
     </a>
     dbt_project_evaluator
@@ -245,7 +235,7 @@
       <a href="https://github.com/dbt-labs/dbt-project-evaluator" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     dbt-labs/dbt-project-evaluator
@@ -269,8 +259,59 @@
   <span class="md-ellipsis">
     
   
-    Home
+  Home
+
+    
+  </span>
   
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../migrating-to-v2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Migrating from version 1
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Agent skills
 
     
   </span>
@@ -297,18 +338,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
     
   
-    Rules
-  
+  Rules
 
     
   </span>
@@ -318,19 +358,19 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
   
-    Rules
-  
+  Rules
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
               
                 
+                  
   
   
   
@@ -343,8 +383,7 @@
   <span class="md-ellipsis">
     
   
-    List of rules
-  
+  List of rules
 
     
   </span>
@@ -355,10 +394,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -371,8 +410,7 @@
   <span class="md-ellipsis">
     
   
-    Modeling
-  
+  Modeling
 
     
   </span>
@@ -383,10 +421,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -399,8 +437,7 @@
   <span class="md-ellipsis">
     
   
-    Testing
-  
+  Testing
 
     
   </span>
@@ -411,10 +448,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -427,8 +464,7 @@
   <span class="md-ellipsis">
     
   
-    Documentation
-  
+  Documentation
 
     
   </span>
@@ -439,10 +475,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -455,8 +491,7 @@
   <span class="md-ellipsis">
     
   
-    Structure
-  
+  Structure
 
     
   </span>
@@ -467,10 +502,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -483,8 +518,7 @@
   <span class="md-ellipsis">
     
   
-    Performance
-  
+  Performance
 
     
   </span>
@@ -495,10 +529,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -511,8 +545,7 @@
   <span class="md-ellipsis">
     
   
-    Governance
-  
+  Governance
 
     
   </span>
@@ -523,10 +556,11 @@
     </li>
   
 
+                
               
-            
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+        
       
     </li>
   
@@ -549,18 +583,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
     
   
-    Customization
-  
+  Customization
 
     
   </span>
@@ -570,19 +603,19 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+              
   
-    Customization
-  
+  Customization
 
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
               
                 
+                  
   
   
   
@@ -595,8 +628,7 @@
   <span class="md-ellipsis">
     
   
-    Overriding variables
-  
+  Overriding variables
 
     
   </span>
@@ -607,10 +639,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -623,8 +655,7 @@
   <span class="md-ellipsis">
     
   
-    Disabling checks
-  
+  Disabling checks
 
     
   </span>
@@ -635,10 +666,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -651,8 +682,7 @@
   <span class="md-ellipsis">
     
   
-    Configuring exceptions to the rules
-  
+  Configuring exceptions to the rules
 
     
   </span>
@@ -663,10 +693,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
   
@@ -679,8 +709,7 @@
   <span class="md-ellipsis">
     
   
-    Excluding packages and models/sources based on path
-  
+  Excluding packages and models/sources based on path
 
     
   </span>
@@ -691,10 +720,10 @@
     </li>
   
 
-              
-            
+                
               
                 
+                  
   
   
     
@@ -703,7 +732,7 @@
   
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
       
       
         
@@ -716,8 +745,7 @@
   <span class="md-ellipsis">
     
   
-    Display issues in the logs
-  
+  Reading the violations in the logs
 
     
   </span>
@@ -727,15 +755,14 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="./" class="md-nav__link md-nav__link--active">
+      <a href="././" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Display issues in the logs
-  
+  Reading the violations in the logs
 
     
   </span>
@@ -746,7 +773,8 @@
       
         
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
   
@@ -755,55 +783,49 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#using-with-dbt-cloud-cli-dbt-cloud-ide-or-dbt-fusion" class="md-nav__link">
+  <a href="#output-of-dbt-check" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Using with dbt Cloud CLI, dbt Cloud IDE, or dbt Fusion
-      
+      <span class="md-typeset">
+        Output of <code>dbt check</code>
+      </span>
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#json-output-for-automation" class="md-nav__link">
+  <a href="#seeing-every-violation-of-a-check" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        JSON output for automation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="JSON output for automation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#getting-clean-json-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Getting clean JSON output
-      
+      <span class="md-typeset">
+        Seeing every violation of a check
+      </span>
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#getting-the-results-in-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Getting the results in JSON
+      </span>
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#logging-your-custom-rules" class="md-nav__link">
     <span class="md-ellipsis">
-      
+      <span class="md-typeset">
         Logging your custom rules
-      
+      </span>
     </span>
   </a>
   
@@ -816,38 +838,11 @@
     </li>
   
 
-              
-            
-              
                 
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../querying-columns-names-and-descriptions/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Querying columns names and descriptions
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
-            
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+        
       
     </li>
   
@@ -867,8 +862,7 @@
   <span class="md-ellipsis">
     
   
-    Run in CI Check
-  
+  Run in CI Check
 
     
   </span>
@@ -894,8 +888,7 @@
   <span class="md-ellipsis">
     
   
-    Querying the DAG
-  
+  Querying the DAG
 
     
   </span>
@@ -921,8 +914,7 @@
   <span class="md-ellipsis">
     
   
-    Contributing
-  
+  Contributing
 
     
   </span>
@@ -949,116 +941,86 @@
                 
                   
 
-
   
     <a href="https://github.com/dbt-labs/dbt-project-evaluator/edit/main/docs/customization/issues-in-log.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
     </a>
   
   
 
 
-<h1 id="displaying-violations-in-the-logs">Displaying violations in the logs<a class="headerlink" href="#displaying-violations-in-the-logs" title="Permanent link">#</a></h1>
-<p>This package provides a macro that can be executed via an <code>on-run-end</code> hook to display the package results in the logs in addition to storing those in the Data Warehouse.</p>
-<p>To use it, you can add the following line in your <code>dbt_project.yml</code>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">on-run-end</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">dbt_project_evaluator.print_dbt_project_evaluator_issues()</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<h1 id="reading-the-violations-in-the-logs">Reading the violations in the logs<a class="headerlink" href="#reading-the-violations-in-the-logs" title="Permanent link">#</a></h1>
+<p>In version 1, the violations had to be displayed in the logs with an <code>on-run-end</code> hook. In version 2, <code>dbt check</code> and <code>dbt build</code> report the violations themselves, and the macro <code>print_dbt_project_evaluator_issues</code> (as well as the variable <code>use_native_agate_printing</code>) doesn't exist anymore.</p>
+<h2 id="output-of-dbt-check">Output of <code>dbt check</code><a class="headerlink" href="#output-of-dbt-check" title="Permanent link">#</a></h2>
+<p>For each check that finds violations, dbt prints the number of violations followed by a table with the first rows returned by the check:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[warning] [CheckWarned (dbt1651)]: check 'fct_root_models' found with 1 violation(s)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>┌────────────────────────────────────────────────────────┬───────────────┬────────────────────────────────┐
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│ unique_id                                              ┆ name          ┆ original_file_path             │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>╞════════════════════════════════════════════════════════╪═══════════════╪════════════════════════════════╡
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│ model.my_project.dim_hardcoded                         ┆ dim_hardcoded ┆ models/marts/dim_hardcoded.sql │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└────────────────────────────────────────────────────────┴───────────────┴────────────────────────────────┘
 </span></code></pre></div>
-<p>The macro accepts two parameters:</p>
 <ul>
-<li>to pick between 3 types of formatting, set <code>format='table'</code> (default), <code>format='csv'</code>, or <code>format='json'</code></li>
-<li>to add quotes to the database and schema (default = no quote), set <code>quote='`'</code> or <code>quote='"'</code></li>
+<li>the message starts with <code>CheckWarned</code> for the checks configured with <code>severity: warn</code> and with <code>CheckFailed</code> for the ones configured with <code>severity: error</code></li>
+<li>the first column, <code>unique_id</code>, is the resource to fix. The other columns depend on the check and give more context (the parent, the expected path, the number of children...)</li>
+<li>only the first 5 rows are displayed. To see all of them, use <a href="#seeing-every-violation-of-a-check">the <code>show_violations.py</code> script</a></li>
 </ul>
-<h2 id="using-with-dbt-cloud-cli-dbt-cloud-ide-or-dbt-fusion">Using with dbt Cloud CLI, dbt Cloud IDE, or dbt Fusion<a class="headerlink" href="#using-with-dbt-cloud-cli-dbt-cloud-ide-or-dbt-fusion" title="Permanent link">#</a></h2>
-<p>The default implementation uses agate's <code>print_table()</code> and <code>print_csv()</code> functions. However, these don't work in all environments:</p>
+<h2 id="seeing-every-violation-of-a-check">Seeing every violation of a check<a class="headerlink" href="#seeing-every-violation-of-a-check" title="Permanent link">#</a></h2>
+<p>When a check finds more than 5 violations, run the script that comes with the package for that check. It prints every row, not only the first 5:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>dbt<span class="w"> </span>check<span class="w">                                    </span><span class="c1"># 1. find the checks with more than 5 violations</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>python<span class="w"> </span>dbt_packages/dbt_project_evaluator/scripts/show_violations.py<span class="w"> </span>fct_undocumented_models<span class="w">   </span><span class="c1"># 2. list all of them</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">A <code>--limit</code> option for <code>dbt check</code> is coming</p>
+<p>Support for a <code>--limit</code> option on <code>dbt check</code>, to choose how many rows are printed per check, is being added to dbt. It is not available yet in dbt 2.0.8, which always prints 5. Until it ships, use the script below.</p>
+</div>
+<p>The script runs <code>dbt check</code> for the check you name, then runs the query of the check in DuckDB. It needs the <code>duckdb</code> command line or the <code>duckdb</code> Python package (<code>uv run --with duckdb dbt_packages/dbt_project_evaluator/scripts/show_violations.py ...</code> installs it on the fly). Use <code>python3</code> instead of <code>python</code> on macOS and Linux if <code>python</code> is not found, or <code>py</code> on Windows.</p>
+<p>The options it does not know, such as <code>--vars</code>, <code>--target</code> or <code>--profiles-dir</code>, are passed to <code>dbt check</code>, so the check sees the same variables and <a href="../exceptions/">exceptions</a> as in your own run.</p>
 <table>
 <thead>
 <tr>
-<th>Environment</th>
-<th><code>format='table'</code></th>
-<th><code>format='csv'</code></th>
-<th><code>format='json'</code></th>
+<th>Option</th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>dbt Core</td>
-<td>native</td>
-<td>native</td>
-<td>Jinja</td>
+<td><code>--format &lt;format&gt;</code></td>
+<td><code>table</code> (the default), <code>markdown</code>, <code>csv</code> or <code>json</code>. <code>csv</code> and <code>json</code> are meant for other tools</td>
 </tr>
 <tr>
-<td>dbt Fusion</td>
-<td>native</td>
-<td><strong>Jinja required</strong></td>
-<td>Jinja</td>
+<td><code>--where "&lt;condition&gt;"</code></td>
+<td>Keep only some of the violations, with a SQL condition on the columns of the check, for example <code>--where "original_file_path like 'models/staging/%'"</code></td>
 </tr>
 <tr>
-<td>dbt Cloud CLI</td>
-<td>Jinja required</td>
-<td>Jinja required</td>
-<td>Jinja</td>
+<td><code>--full-parse</code></td>
+<td>Parse the whole project again. By default the script reuses the previous parse of the project (<code>--partial-parse --partial-load</code>, dbt re-parses what changed), which makes it about 3 times faster from the second run on a large project. These dbt flags are not documented; if your version of dbt rejects them, the script parses everything</td>
 </tr>
 <tr>
-<td>dbt Cloud IDE</td>
-<td>Jinja required</td>
-<td>Jinja required</td>
-<td>Jinja</td>
+<td><code>--no-run</code></td>
+<td>Write the SQL to <code>target/check_violations/&lt;check&gt;.sql</code> without running it. You can then run it yourself, with <code>duckdb -box &lt; target/check_violations/&lt;check&gt;.sql</code>, or open it in the DuckDB UI</td>
 </tr>
 </tbody>
 </table>
-<p>If you're using dbt Cloud CLI or dbt Cloud IDE, or if you want to use <code>format='csv'</code> with dbt Fusion, set the following variable in your <code>dbt_project.yml</code>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">vars</span><span class="p">:</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">use_native_agate_printing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</span></code></pre></div>
-<p>This will use a pure Jinja implementation that works across all environments.</p>
-<h2 id="json-output-for-automation">JSON output for automation<a class="headerlink" href="#json-output-for-automation" title="Permanent link">#</a></h2>
-<p>The <code>format='json'</code> option outputs results as a single JSON array, making it easy to pipe to tools like <code>jq</code> or consume programmatically.</p>
-<p><strong>Example output:</strong></p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">[</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p">{</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">&quot;test_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dbt_project_evaluator.marts.dag.is_empty_fct_model_fanout_&quot;</span><span class="p">,</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">&quot;results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="p">{</span><span class="nt">&quot;resource_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my_model&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;num_dependents&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">}</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p">]</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="p">},</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="p">{</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">&quot;test_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dbt_project_evaluator.marts.tests.is_empty_fct_missing_primary_key_tests_&quot;</span><span class="p">,</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nt">&quot;results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="p">{</span><span class="nt">&quot;resource_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stg_orders&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;resource_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model&quot;</span><span class="p">}</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="p">]</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="p">]</span>
-</span></code></pre></div>
-<h3 id="getting-clean-json-output">Getting clean JSON output<a class="headerlink" href="#getting-clean-json-output" title="Permanent link">#</a></h3>
-<p>To get valid JSON that can be piped to other tools, combine <code>format='json'</code> with dbt's <code>--quiet</code> (or <code>-q</code>) flag. This suppresses dbt's usual log output:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>dbt<span class="w"> </span>build<span class="w"> </span>--select<span class="w"> </span>package:dbt_project_evaluator<span class="w"> </span>-q<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+<p><code>dbt check</code> applies <code>--select</code> (and <code>state:modified</code>) to the rows of a check, not to its query. The script therefore shows the violations of the whole project, even if you pass it <code>--select</code>. Use <code>--where</code> to keep the ones you want.</p>
+<h2 id="getting-the-results-in-json">Getting the results in JSON<a class="headerlink" href="#getting-the-results-in-json" title="Permanent link">#</a></h2>
+<p>With <code>--log-format json</code>, every log line is a JSON document, which makes it easy to consume the results programmatically, for example with <code>jq</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># one line per check with violations: name and number of violations</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>dbt<span class="w"> </span>check<span class="w"> </span>--log-format<span class="w"> </span>json<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">'select(.info.name == "CheckWarned" or .info.name == "CheckFailed") | .info.msg | split("\n")[0]'</span>
 </span></code></pre></div>
 <p>This is particularly useful for:</p>
 <ul>
-<li><strong>CI/CD pipelines</strong>: Parse results programmatically and fail builds based on specific violations</li>
-<li><strong>LLM-powered automation</strong>: Feed the JSON output to an LLM to analyze violations and suggest fixes automatically</li>
-<li><strong>Custom dashboards</strong>: Ingest results into monitoring tools or databases</li>
-<li><strong>Filtering with jq</strong>: Extract specific tests or results</li>
+<li><strong>CI/CD pipelines</strong>: parse the results and fail builds based on specific violations</li>
+<li><strong>Custom dashboards</strong>: ingest the number of violations over time into a monitoring tool</li>
+<li><strong>LLM-powered automation</strong>: feed the results to an LLM to analyze the violations and suggest fixes</li>
 </ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Get all test names</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>dbt<span class="w"> </span>build<span class="w"> </span>--select<span class="w"> </span>package:dbt_project_evaluator<span class="w"> </span>-q<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.[].test_name&#39;</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Get results for a specific test</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>dbt<span class="w"> </span>build<span class="w"> </span>--select<span class="w"> </span>package:dbt_project_evaluator<span class="w"> </span>-q<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.[] | select(.test_name | contains(&quot;fanout&quot;))&#39;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Count total violations</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>dbt<span class="w"> </span>build<span class="w"> </span>--select<span class="w"> </span>package:dbt_project_evaluator<span class="w"> </span>-q<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;[.[].results | length] | add&#39;</span>
-</span></code></pre></div>
+<p>The <code>msg</code> field also contains the table with the first 5 rows of each check. To get all the rows of a check, use <a href="#seeing-every-violation-of-a-check">the <code>show_violations.py</code> script</a> with <code>--format json</code>.</p>
 <h2 id="logging-your-custom-rules">Logging your custom rules<a class="headerlink" href="#logging-your-custom-rules" title="Permanent link">#</a></h2>
-<p>You can also log the results of your custom rules by applying <code>dbt_project_evaluator.is_empty</code> to
-the custom models.</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">models</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_custom_rule_model</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">This is my custom project evaluator check</span><span class="w"> </span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">data_tests</span><span class="p">:</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dbt_project_evaluator.is_empty</span>
-</span></code></pre></div>
+<p>The checks you define in your own project (see <a href="../../querying-the-dag/#defining-additional-checks-that-match-your-exact-requirements">defining additional checks</a>) are reported in the same way as the ones from this package.</p>
+
+
 
 
 
@@ -1088,10 +1050,10 @@ the custom models.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../excluding-packages-and-paths/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Excluding packages and models/sources based on path">
+          <a href="../excluding-packages-and-paths/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Excluding packages and models&#x2f;sources based on path">
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
             </div>
             <div class="md-footer__title">
               <span class="md-footer__direction">
@@ -1105,18 +1067,18 @@ the custom models.</p>
         
         
           
-          <a href="../querying-columns-names-and-descriptions/" class="md-footer__link md-footer__link--next" aria-label="Next: Querying columns names and descriptions">
+          <a href="../../ci-check/" class="md-footer__link md-footer__link--next" aria-label="Next: Run in CI Check">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Querying columns names and descriptions
+                Run in CI Check
               </div>
             </div>
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
           </a>
         
@@ -1129,8 +1091,8 @@ the custom models.</p>
   
   
     Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
     </a>
   
 </div>
@@ -1140,7 +1102,7 @@ the custom models.</p>
 </footer>
       
     </div>
-    <div class="md-dialog" data-md-component="dialog">
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
@@ -1148,11 +1110,25 @@ the custom models.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.footer", "navigation.instant", "navigation.tracking", "content.action.edit", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["navigation.footer","navigation.instant","navigation.tracking","content.action.edit","toc.integrate"],"redirect":null,"search":"../../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"provider":"mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+  
+  <script
+    src="https://cdn.jsdelivr.net/npm/pele@1.6.0/dist/pele.global.js"
+    integrity="sha384-4lHoXtKDt+x/E+htiTc83bpFWyREQzJCMudNQHirqKiCTW7Mx790I/5Q7criNZ1G"
+    crossorigin="anonymous"
+  ></script>
+  
+      <script src="../../assets/javascripts/bundle.67a597eb.min.js"></script>
+      
+        <script src="../../javascripts/pele-init.js"></script>
       
     
+
   </body>
 </html>
